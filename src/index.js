@@ -14,4 +14,4 @@ const files = [
 ];
 
 const fileHandler = new FileHandler(files);
-fileHandler.checkFileExtensions();
+fileHandler.checkFiles();

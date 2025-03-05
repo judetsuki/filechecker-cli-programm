@@ -3,32 +3,64 @@ export default class FileHandler {
     this.files = files;
   }
 
-  checkFileExtensions() {
+  checkFiles() {
     this.files.forEach((file) => {
-      if (typeof file === "string") {
-        const extension = file.split(".").pop();
-        if (extension) {
-          console.log(`${file} has the extension: ${extension}`);
-          if (this.WatermarkAble(file)) {
-            console.log(`${file} IS watermarkable`);
-          } else {
-            console.log(`${file} is NOT watermarkable`);
-          }
-          console.log("------------------");
-        } else {
-          console.log(`${file} does not have an extension.`);
-        }
-      } else if (file === null) {
-        console.log("Null value found in the array.");
-      } else if (typeof file === "number") {
-        console.log(`${file} is a number, not a file.`);
-      } else {
-        console.log(`Unknown type found: ${typeof file}`);
-      }
+      this.processFile(file);
     });
   }
 
-  WatermarkAble(file) {
-    return file.includes("jpg") || file.includes("png");
+  processFile(file) {
+    if (typeof file === "string") {
+      const extension = this.extractExtension(file);
+      if (extension) {
+        this.logExtension(file, extension);
+        this.checkWatermark(file, extension);
+      } else {
+        this.logNoExtension(file);
+      }
+    } else if (file === null) {
+      this.logNullValue();
+    } else if (typeof file === "number") {
+      this.logNumber(file);
+    } else {
+      this.logUnknownType(file);
+    }
+  }
+
+  extractExtension(file) {
+    return file.split(".").pop();
+  }
+
+  logExtension(file, extension) {
+    console.log(`${file} расширение файла: ${extension}`);
+  }
+
+  checkWatermark(file, extension) {
+    if (this.isWatermarkAble(extension)) {
+      console.log(`${file} на этот файл МОЖНО установить вотермарк`);
+    } else {
+      console.log(`${file} на этот файл НЕЛЬЗЯ установить вотермарк`);
+    }
+    console.log("------------------");
+  }
+
+  logNoExtension(file) {
+    console.log(`${file} у этого файла нет расширения`);
+  }
+
+  logNullValue(file) {
+    console.log(`${file} - null значение`);
+  }
+
+  logNumber(number) {
+    console.log(`${number} - число а не файл.`);
+  }
+
+  logUnknownType(type) {
+    console.log(`неизвестный тип файла: ${typeof type}`);
+  }
+
+  isWatermarkAble(extension) {
+    return extension.includes("jpg") || extension.includes("png");
   }
 }
